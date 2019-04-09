@@ -1,7 +1,13 @@
 defmodule Pixiv.Works do
+  @moduledoc """
+  """
+
   alias Pixiv.API
 
-  def get(work_id, options \\ []) do
+  @doc """
+  Fetches metadata for a single gallery.
+  """
+  def fetch(work_id, options \\ []) do
     with {:ok, response} <- API.get("/works/#{work_id}", [], options),
          %{status_code: 200, body: body} <- response,
          %{"response" => [work | _]} <- body do
@@ -18,6 +24,9 @@ defmodule Pixiv.Works do
     end
   end
 
+  @doc """
+  Naively parses and returns the updated date for a gallery.
+  """
   def updated_at(work) do
     work
     |> Map.get("reuploaded_time", work["created_time"])

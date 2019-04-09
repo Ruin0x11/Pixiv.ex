@@ -1,4 +1,8 @@
 defmodule Pixiv.API do
+  @moduledoc """
+  HTTPoison wrapper over the Pixiv public API.
+  """
+
   use HTTPoison.Base
 
   def process_request_headers(headers) do

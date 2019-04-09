@@ -9,10 +9,9 @@ defmodule Pixiv.HTTP do
     credentials()
     |> Pixiv.headers()
     |> Enum.into(headers)
-    |> Enum.into([])
   end
 
   defp credentials do
-    apply(Application.get_env(:pixiv, :storage), :credentials, [])
+    Pixiv.credentials_cache().credentials()
   end
 end
