@@ -6,26 +6,20 @@ defmodule Pixiv.MixProject do
       app: :pixiv,
       version: "0.2.0",
       elixir: "~> 1.7",
+      deps: deps(),
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      build_embedded: Mix.env() == :prod
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
-  def application do
-    [
-      extra_applications: [:logger]
-    ]
-  end
-
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:jason, "~> 1.1"},
       {:httpoison, "~> 1.5"},
 
-      ## Development dependencies
-      {:ex_doc, "~> 0.14", only: :dev, runtime: false}
+      # Development dependencies
+      {:ex_doc, "~> 0.20", only: :dev, runtime: false},
+      {:credo, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 end

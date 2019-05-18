@@ -25,6 +25,14 @@ defmodule Pixiv.Works do
   end
 
   @doc """
+  Fetches metadata for a single gallery.
+  """
+  def fetch!(work_id, options \\ []) do
+    {:ok, work} = fetch(work_id, options)
+    work
+  end
+
+  @doc """
   Naively parses and returns the updated date for a gallery.
   """
   def updated_at(work) do

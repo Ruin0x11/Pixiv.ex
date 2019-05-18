@@ -30,5 +30,14 @@ config :pixiv,
 # by uncommenting the line below and defining dev.exs, test.exs and such.
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
-#
-#     import_config "#{Mix.env()}.exs"
+
+case Mix.env() do
+  :test ->
+    import_config "test.secret.exs"
+
+  :dev ->
+    import_config "dev.secret.exs"
+
+  _env ->
+    nil
+end

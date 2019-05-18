@@ -6,9 +6,7 @@ defmodule Pixiv.HTTP do
   end
 
   def process_request_headers(headers) do
-    credentials()
-    |> Pixiv.headers()
-    |> Enum.into(headers)
+    Pixiv.headers(credentials()) ++ headers
   end
 
   defp credentials do

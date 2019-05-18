@@ -24,6 +24,6 @@ defmodule Pixiv.Credentials do
   end
 
   defp time() do
-    System.monotonic_time(:seconds)
+    System.monotonic_time(:second)
   end
 end
