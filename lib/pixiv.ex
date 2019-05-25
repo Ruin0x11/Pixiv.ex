@@ -1,41 +1,28 @@
 defmodule Pixiv do
+  @moduledoc """
+  An unofficial interface to the Pixiv API.
+
+  Note that, in order to make API requests, a `t:Pixiv.Credentials.t/0` instance should
+  be obtained and managed by the caller. For convenience, this library provides the
+  `Pixiv.CredentialsCache` module in order to do those.
+  """
+
   def base_url, do: "https://public-api.secure.pixiv.net/v1"
   def auth_url, do: "https://oauth.secure.pixiv.net/auth/token"
 
+  @doc """
+  Returns the public identifier used by OAuth2.
+
+  Taken from the Pixiv Android app.
+  """
   def client_id, do: "MOBrBDS8blbauoSck0ZfDbtuzpyT"
+
+  @doc """
+  Returns the private identifier used by OAuth2.
+
+  Taken from the Pixiv Android app.
+  """
   def client_secret, do: "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
-
-  @doc """
-  Returns the configured `:username` entry.
-  """
-  def username do
-    Application.get_env(:pixiv, :username)
-  end
-
-  @doc """
-  Returns the configured `:password` entry.
-  """
-  def password do
-    Application.get_env(:pixiv, :password)
-  end
-
-  @doc """
-  Returns the configured `:authenticator` entry.
-
-  If not supplied, `Pixiv.Authenticator` is used by default.
-  """
-  def authenticator do
-    Application.get_env(:pixiv, :authenticator, Pixiv.Authenticator)
-  end
-
-  @doc """
-  Returns the configured `:credentials_cache` entry.
-
-  If not supplied, `Pixiv.CredentialsCache` is used by default.
-  """
-  def credentials_cache do
-    Application.get_env(:pixiv, :credentials_cache, Pixiv.CredentialsCache)
-  end
 
   @doc """
   Returns the headers as used through this library.
@@ -50,7 +37,7 @@ defmodule Pixiv do
   @doc """
   Returns the headers, bound to credentials, as used through this library.
   """
-  def headers(%Pixiv.Credentials{access_token: token}) do
+  def headers_for(%Pixiv.Credentials{access_token: token}) do
     [
       {"Authorization", "Bearer #{token}"} | headers()
     ]

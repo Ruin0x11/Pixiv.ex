@@ -3,12 +3,18 @@ defmodule Pixiv.MixProject do
 
   def project do
     [
+      description: "An unoffical API client for Pixiv.",
+      version: "0.3.0",
       app: :pixiv,
-      version: "0.2.0",
-      elixir: "~> 1.7",
-      deps: deps(),
       start_permanent: Mix.env() == :prod,
-      build_embedded: Mix.env() == :prod
+      build_embedded: Mix.env() == :prod,
+      elixir: "~> 1.8",
+      deps: deps(),
+
+      # Docs
+      name: "Pixiv.ex",
+      source_url: "https://github.com/BlindJoker/Pixiv.ex",
+      homepage_url: "https://blindjoker.github.io/Pixiv.ex/"
     ]
   end
 
@@ -17,7 +23,7 @@ defmodule Pixiv.MixProject do
       {:jason, "~> 1.1"},
       {:httpoison, "~> 1.5"},
 
-      # Development dependencies
+      # Development dependencies.
       {:ex_doc, "~> 0.20", only: :dev, runtime: false},
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false}
     ]

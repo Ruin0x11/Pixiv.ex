@@ -4,11 +4,33 @@ defmodule Pixiv.Authenticator do
   """
 
   alias Pixiv.Credentials
+  alias Pixiv.Utils
 
+  require Pixiv.Utils
+
+  @doc """
+  Authenticates the user using a valid `username` and `password`.
+  """
+  @spec login(String.t(), String.t()) :: {:ok, Credentials.t()} | {:error, binary}
   def login(username, password) do
     authenticate(grant_type: "password", username: username, password: password)
   end
 
+  @doc """
+  Same as `login/2`, but raises `Pixiv.Error` on failure.
+  """
+  @spec login(String.t(), String.t()) :: Credentials.t()
+  def login!(username, password) do
+    Utils.bangify(login(username, password))
+  end
+
+  @doc """
+  Attempts to refresh the `t:Pixiv.Credentials.t/0` access token using the refresh
+  token.
+
+  If `lazy` is set, nothing is done unless the access token is expired.
+  """
+  @spec refresh(Credentials.t(), boolean) :: {:ok, Credentials.t()} | {:error, binary}
   def refresh(credentials, lazy \\ true)
 
   def refresh(%Credentials{refresh_token: token}, false) do
@@ -19,8 +41,16 @@ defmodule Pixiv.Authenticator do
     if Credentials.expired?(credentials) do
       refresh(credentials, false)
     else
-      {:noop, credentials}
+      {:ok, credentials}
     end
+  end
+
+  @doc """
+  Same as `refresh/2`, but raises `Pixiv.Error` on failure.
+  """
+  @spec refresh(Credentials.t(), boolean) :: Credentials.t()
+  def refresh!(credentials, lazy \\ true) do
+    Utils.bangify(refresh(credentials, lazy))
   end
 
   defp authenticate(params) do

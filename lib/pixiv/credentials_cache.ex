@@ -1,20 +1,18 @@
 defmodule Pixiv.CredentialsCache do
   @moduledoc """
-  Basic mechanism for storage and upkeeping of credentials.
-
-  If no authentication information is supplied at the start, this module will
-  look for `:username` and `:password` under the `:pixiv` application config.
+  Storage mechanism for upkeeping credentials.
   """
 
   use GenServer
 
+  alias Pixiv.Authenticator
   alias Pixiv.Credentials
 
   @doc """
   Starts a credentials server.
   """
-  def start_link(config) do
-    GenServer.start_link(__MODULE__, config, name: __MODULE__)
+  def start_link(options) do
+    GenServer.start_link(__MODULE__, options, name: __MODULE__)
   end
 
   @doc """
@@ -30,7 +28,7 @@ defmodule Pixiv.CredentialsCache do
   @doc """
   Refreshes the credentials.
 
-  If lazy is `true`, a refresh request won't be made unless needed.
+  If `lazy` is set, nothing is done unless the access token is expired.
   """
   def refresh(lazy \\ true) do
     GenServer.cast(__MODULE__, {:refresh, lazy})
@@ -39,21 +37,16 @@ defmodule Pixiv.CredentialsCache do
   ## Callbacks
 
   @doc false
-  def init([]) do
-    init(username: Pixiv.username(), password: Pixiv.password())
-  end
-
-  @doc false
   def init(%Credentials{} = credentials) do
-    case refresh(credentials, false) do
+    case Authenticator.refresh(credentials, false) do
       {:ok, state} -> {:ok, state}
       {:error, reason} -> {:stop, reason}
     end
   end
 
   @doc false
-  def init(username: username, password: password) do
-    case login(username, password) do
+  def init(options) do
+    case Authenticator.login(options[:username], options[:password]) do
       {:ok, state} -> {:ok, state}
       {:error, reason} -> {:stop, reason}
     end
@@ -66,20 +59,9 @@ defmodule Pixiv.CredentialsCache do
 
   @doc false
   def handle_cast({:refresh, lazy}, state) do
-    case refresh(state, lazy) do
+    case Authenticator.refresh(state, lazy) do
       {:ok, state} -> {:noreply, state}
-      {:noop, state} -> {:noreply, state}
       {:error, reason} -> {:stop, reason, %Credentials{}}
     end
-  end
-
-  ## Utility functions
-
-  defp login(username, password) do
-    Pixiv.authenticator().login(username, password)
-  end
-
-  defp refresh(credentials, lazy) do
-    Pixiv.authenticator().refresh(credentials, lazy)
   end
 end

@@ -1,12 +1,14 @@
 defmodule Pixiv.AuthenticatorTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
-  alias Pixiv.{Authenticator, Credentials}
+  alias Pixiv.Authenticator
+  alias Pixiv.Credentials
 
-  doctest Authenticator
-
-  setup do
-    {:ok, username: Pixiv.username(), password: Pixiv.password()}
+  setup_all do
+    %{
+      username: System.get_env("PIXIV_USERNAME"),
+      password: System.get_env("PIXIV_PASSWORD")
+    }
   end
 
   test "login works", context do
@@ -17,7 +19,6 @@ defmodule Pixiv.AuthenticatorTest do
   end
 
   test "invalid login" do
-    assert Pixiv.Authenticator.login("example@example.com", "example") ==
-             {:error, "Unauthorized! Maybe your pixiv username or password is wrong?"}
+    assert {:error, _reason} = Authenticator.login("example@example.com", "example")
   end
 end
