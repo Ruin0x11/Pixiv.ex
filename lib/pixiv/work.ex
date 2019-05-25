@@ -57,7 +57,7 @@ defmodule Pixiv.Work do
   end
 
   @doc """
-  Whether the given gallery has more than one page.
+  Whether the given gallery is animated.
   """
   @spec animated?(term) :: boolean
   def animated?(gallery) do
