@@ -38,7 +38,7 @@ defmodule Pixiv.Credentials do
   """
   @spec from_token(String.t()) :: Credentials.t()
   def from_token(refresh_token) do
-    %Credentials{refresh_token: refresh_token}
+    new(nil, refresh_token, -1)
   end
 
   @doc """

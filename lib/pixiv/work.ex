@@ -18,7 +18,7 @@ defmodule Pixiv.Work do
         process_response(response)
 
       {:ok, %{status_code: status_code}} ->
-        {:error, "Request returned code `#{status_code}`."}
+        {:error, "HTTP request returned code `#{status_code}`."}
 
       {:error, reason} ->
         {:error, reason}
@@ -49,11 +49,9 @@ defmodule Pixiv.Work do
   """
   @spec updated_at!(term) :: NaiveDateTime.t()
   def updated_at!(gallery) do
-    Utils.bangify(
-      gallery
-      |> Map.get("reuploaded_time", gallery["created_time"])
-      |> NaiveDateTime.from_iso8601!()
-    )
+    gallery
+    |> Map.get("reuploaded_time", gallery["created_time"])
+    |> NaiveDateTime.from_iso8601!()
   end
 
   @doc """

@@ -27,6 +27,7 @@ defmodule Pixiv do
   @doc """
   Returns the headers as used through this library.
   """
+  @spec headers() :: [{String.t(), String.t()}]
   def headers() do
     [
       {"User-Agent", "PixivAndroidApp/5.0.64 (Android 6.0)"},
@@ -37,6 +38,7 @@ defmodule Pixiv do
   @doc """
   Returns the headers, bound to credentials, as used through this library.
   """
+  @spec headers_for(Pixiv.Credentials.t()) :: [{String.t(), String.t()}]
   def headers_for(%Pixiv.Credentials{access_token: token}) do
     [
       {"Authorization", "Bearer #{token}"} | headers()

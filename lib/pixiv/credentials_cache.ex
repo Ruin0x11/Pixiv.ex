@@ -53,7 +53,7 @@ defmodule Pixiv.CredentialsCache do
   end
 
   @doc false
-  def handle_call(:credentials, _, state) do
+  def handle_call(:credentials, _from, state) do
     {:reply, state, state}
   end
 
