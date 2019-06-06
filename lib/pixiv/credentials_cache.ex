@@ -21,7 +21,8 @@ defmodule Pixiv.CredentialsCache do
   Do note that this function will never do a refresh on its own, and as such
   may return stale values.
   """
-  def credentials() do
+  @spec credentials() :: Credentials.t()
+  def credentials do
     GenServer.call(__MODULE__, :credentials)
   end
 
@@ -36,7 +37,7 @@ defmodule Pixiv.CredentialsCache do
 
   ## Callbacks
 
-  @doc false
+  @impl true
   def init(%Credentials{} = credentials) do
     case Authenticator.refresh(credentials, false) do
       {:ok, state} -> {:ok, state}
@@ -44,7 +45,7 @@ defmodule Pixiv.CredentialsCache do
     end
   end
 
-  @doc false
+  @impl true
   def init(options) do
     case Authenticator.login(options[:username], options[:password]) do
       {:ok, state} -> {:ok, state}
@@ -52,12 +53,12 @@ defmodule Pixiv.CredentialsCache do
     end
   end
 
-  @doc false
+  @impl true
   def handle_call(:credentials, _from, state) do
     {:reply, state, state}
   end
 
-  @doc false
+  @impl true
   def handle_cast({:refresh, lazy}, state) do
     case Authenticator.refresh(state, lazy) do
       {:ok, state} -> {:noreply, state}

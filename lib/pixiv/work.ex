@@ -29,10 +29,12 @@ defmodule Pixiv.Work do
   end
 
   defp process_response(response) do
-    if %{"response" => [work]} = response.body do
-      {:ok, work}
-    else
-      {:error, "Unexpected response body."}
+    case response.body do
+      %{"response" => [work]} ->
+        {:ok, work}
+
+      _ ->
+        {:error, "Unexpected response body."}
     end
   end
 

@@ -58,7 +58,7 @@ defmodule Pixiv.Credentials do
     is_nil(expires_at) or expires_in(credentials) <= 60
   end
 
-  defp time() do
+  defp time do
     System.monotonic_time(:second)
   end
 end

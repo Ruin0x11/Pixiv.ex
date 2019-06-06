@@ -28,7 +28,7 @@ defmodule Pixiv do
   Returns the headers as used through this library.
   """
   @spec headers() :: [{String.t(), String.t()}]
-  def headers() do
+  def headers do
     [
       {"User-Agent", "PixivAndroidApp/5.0.64 (Android 6.0)"},
       {"Referer", "https://public-api.secure.pixiv.net/"}

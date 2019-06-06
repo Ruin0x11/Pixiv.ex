@@ -1,4 +1,8 @@
 defmodule Pixiv.Utils do
+  @moduledoc """
+  Utility functions for internal use.
+  """
+
   @doc """
   Extracts the `value` from a `{:ok, value}` expression, or raises an exception with
   `reason` if it's in the `{:error, reason}` format.
