@@ -54,7 +54,8 @@ defmodule Pixiv.Credentials do
   """
   @spec expired?(Credentials.t()) :: boolean
   def expired?(%Credentials{expires_at: expires_at} = credentials) do
-    is_nil(expires_at) or expires_in(credentials) <= 0
+    # Add a 1-minute leeway so we won't get hit by surprise.
+    is_nil(expires_at) or expires_in(credentials) <= 60
   end
 
   defp time() do
