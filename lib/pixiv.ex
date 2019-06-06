@@ -7,25 +7,32 @@ defmodule Pixiv do
   `Pixiv.CredentialsCache` module in order to do those.
   """
 
+  @doc """
+  Base URL for the public API.
+  """
+  @spec base_url() :: String.t()
   def base_url, do: "https://public-api.secure.pixiv.net/v1"
+
+  @doc """
+  Endpoint for requesting and refreshing authentication tokens.
+  """
+  @spec auth_url() :: String.t()
   def auth_url, do: "https://oauth.secure.pixiv.net/auth/token"
 
   @doc """
-  Returns the public identifier used by OAuth2.
-
-  Taken from the Pixiv Android app.
+  Public identifier used by OAuth2.
   """
+  @spec client_id() :: String.t()
   def client_id, do: "MOBrBDS8blbauoSck0ZfDbtuzpyT"
 
   @doc """
-  Returns the private identifier used by OAuth2.
-
-  Taken from the Pixiv Android app.
+  Private identifier used by OAuth2.
   """
+  @spec client_secret() :: String.t()
   def client_secret, do: "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
 
   @doc """
-  Returns the headers as used through this library.
+  Request headers required to access Pixiv.
   """
   @spec headers() :: [{String.t(), String.t()}]
   def headers do
@@ -36,12 +43,12 @@ defmodule Pixiv do
   end
 
   @doc """
-  Returns the headers, bound to credentials, as used through this library.
+  Returns the request headers bound to `credentials`.
   """
   @spec headers_for(Pixiv.Credentials.t()) :: [{String.t(), String.t()}]
-  def headers_for(%Pixiv.Credentials{access_token: token}) do
+  def headers_for(credentials) do
     [
-      {"Authorization", "Bearer #{token}"} | headers()
+      {"Authorization", "Bearer #{credentials.access_token}"} | headers()
     ]
   end
 end

@@ -19,7 +19,7 @@ defmodule Pixiv.Authenticator do
   @doc """
   Same as `login/2`, but raises `Pixiv.Error` on failure.
   """
-  @spec login(String.t(), String.t()) :: Credentials.t()
+  @spec login!(String.t(), String.t()) :: Credentials.t()
   def login!(username, password) do
     Utils.bangify(login(username, password))
   end
@@ -48,7 +48,7 @@ defmodule Pixiv.Authenticator do
   @doc """
   Same as `refresh/2`, but raises `Pixiv.Error` on failure.
   """
-  @spec refresh(Credentials.t(), boolean) :: Credentials.t()
+  @spec refresh!(Credentials.t(), boolean) :: Credentials.t()
   def refresh!(credentials, lazy \\ true) do
     Utils.bangify(refresh(credentials, lazy))
   end

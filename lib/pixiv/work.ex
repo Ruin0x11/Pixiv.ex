@@ -12,6 +12,7 @@ defmodule Pixiv.Work do
   @doc """
   Fetches metadata for a single gallery.
   """
+  @spec get(Credentials.t(), integer, Keyword.t()) :: {:ok, term} | {:error, term}
   def get(credentials, id, options \\ []) do
     case Client.get(credentials, "/works/#{id}", options) do
       {:ok, %{status_code: 200} = response} ->
