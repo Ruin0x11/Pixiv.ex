@@ -1,21 +1,23 @@
-# Pixiv
+# Pixiv.ex
 
-**TODO: Add description**
+An unofficial Pixiv client for Elixir.
+
+## Disclaimer
+
+This project uses undocumented API features, and thus may stop working at any time, get rate-limited, or even cause your Pixiv account to be banned. Use at your own discretion.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `pixiv` to your list of dependencies in `mix.exs`:
+Due to the nature of this project, it won't be added to Hex; as such, it must be added as a GitHub dependency.
 
 ```elixir
 def deps do
   [
-    {:pixiv, "~> 0.1.0"}
+    {:percussion, github: "BlindJoker/Percussion"}
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/pixiv](https://hexdocs.pm/pixiv).
+## License
 
+This project is licensed under the [MIT](https://opensource.org/licenses/MIT) license.
