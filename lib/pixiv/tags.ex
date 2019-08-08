@@ -9,24 +9,36 @@ defmodule Pixiv.Tags do
   require Pixiv.Utils
 
   @doc """
-  Requests the gallery tag map for the given `id`.
+  Requests the gallery tag index for the given `id`.
   """
-  @spec get_work_tags(term) :: {:ok, translations} | :error
-  def get_work_tags(id) do
-    with {:ok, work} <- get_work_metadata(id) do
-      case get_in(work, ["tags", "tags"]) do
-        nil -> :error
-        tags -> {:ok, index_tags(tags)}
-      end
+  @spec get_work_tags(term, translations) :: translations | nil
+  def get_work_tags(id, default \\ nil) do
+    case get_work_metadata(id) do
+      {:ok, %{"tags" => %{"tags" => tags}}} ->
+        index_tags(tags)
+
+      _ ->
+        default
     end
   end
 
   @doc """
-  Same as `get_work_tags/1`, but raises `Pixiv.Error` on failure.
+  Requests the gallery tag index for the given `id`, returning an error if it fails.
   """
-  @spec get_work_tags!(term) :: translations
-  def get_work_tags!(id) do
-    Pixiv.Utils.bangify(get_work_tags(id))
+  @spec fetch_work_tags(term) :: {:ok, translations} | :error
+  def fetch_work_tags(id) do
+    case get_work_tags(id) do
+      nil -> :error
+      index -> {:ok, index}
+    end
+  end
+
+  @doc """
+  Same as `fetch_work_tags/1`, but raises `Pixiv.Error` on failure.
+  """
+  @spec fetch_work_tags!(term) :: translations
+  def fetch_work_tags!(id) do
+    Pixiv.Utils.bangify(fetch_work_tags(id))
   end
 
   @doc """

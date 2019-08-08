@@ -1,7 +1,7 @@
 defmodule Pixiv.MixProject do
   use Mix.Project
 
-  @version "0.3.3"
+  @version "0.4.0"
   @description "An unoffical API client for Pixiv."
 
   def project do

@@ -4,7 +4,7 @@ defmodule Pixiv.TagsTest do
   alias Pixiv.Tags
 
   setup do
-    %{tags: Tags.get_work_tags!(54_032_421)}
+    %{tags: Tags.fetch_work_tags!(54_032_421)}
   end
 
   test "translation is correct", %{tags: tags} do
