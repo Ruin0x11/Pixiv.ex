@@ -3,6 +3,9 @@ defmodule Pixiv.Work do
   Endpoints for retrieving information about a gallery.
   """
 
+  @typedoc "A Pixiv gallery."
+  @type gallery :: term
+
   alias Pixiv.Client
   alias Pixiv.Credentials
   alias Pixiv.Utils
@@ -12,20 +15,20 @@ defmodule Pixiv.Work do
   @doc """
   Fetches metadata for a single gallery.
   """
-  @spec get(Credentials.t(), integer, Keyword.t()) :: {:ok, term} | {:error, term}
+  @spec get(Credentials.t(), integer, Keyword.t()) :: {:ok, gallery} | {:error, term}
   def get(credentials, id, options \\ []) do
     case Client.get(credentials, "/works/#{id}", options) do
       {:ok, %{status_code: 200} = response} ->
         process_response(response)
 
       {:ok, %{status_code: status_code}} ->
-        {:error, "HTTP request returned code `#{status_code}`."}
+        {:error, "HTTP request returned status code #{status_code}"}
 
       {:error, reason} ->
         {:error, reason}
 
       _ ->
-        {:error, "Unknown error."}
+        {:error, "Unknown error"}
     end
   end
 
@@ -35,14 +38,14 @@ defmodule Pixiv.Work do
         {:ok, work}
 
       _ ->
-        {:error, "Unexpected response body."}
+        {:error, "Unexpected response body"}
     end
   end
 
   @doc """
   Fetches metadata for a single gallery.
   """
-  @spec get!(Credentials.t(), integer, Keyword.t()) :: term
+  @spec get!(Credentials.t(), integer, Keyword.t()) :: gallery
   def get!(credentials, id, options \\ []) do
     Utils.bangify(get(credentials, id, options))
   end
@@ -50,7 +53,7 @@ defmodule Pixiv.Work do
   @doc """
   Naively parses and returns the updated date for a gallery.
   """
-  @spec updated_at!(term) :: NaiveDateTime.t()
+  @spec updated_at!(gallery) :: NaiveDateTime.t()
   def updated_at!(gallery) do
     gallery
     |> Map.get("reuploaded_time", gallery["created_time"])
@@ -60,7 +63,7 @@ defmodule Pixiv.Work do
   @doc """
   Whether the given gallery is animated.
   """
-  @spec animated?(term) :: boolean
+  @spec animated?(gallery) :: boolean
   def animated?(gallery) do
     gallery["type"] == "ugoira"
   end
@@ -68,7 +71,7 @@ defmodule Pixiv.Work do
   @doc """
   Whether the given gallery has more than one page.
   """
-  @spec multipage?(term) :: boolean
+  @spec multipage?(gallery) :: boolean
   def multipage?(gallery) do
     gallery["page_count"] > 1
   end
@@ -76,16 +79,16 @@ defmodule Pixiv.Work do
   @doc """
   Returns a link to the Pixiv page for the given gallery.
   """
-  @spec link_for(term) :: String.t()
+  @spec link_for(gallery) :: String.t()
   def link_for(gallery) do
-    "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=#{gallery["id"]}"
+    Pixiv.gallery_url(gallery["url"])
   end
 
   @doc """
   Returns a link to the Pixiv page for the given gallery's author.
   """
-  @spec author_link_for(term) :: String.t()
-  def author_link_for(work) do
-    "https://www.pixiv.net/member.php?id=#{work["user"]["id"]}"
+  @spec author_link_for(gallery) :: String.t()
+  def author_link_for(gallery) do
+    Pixiv.member_url(gallery["user"]["id"])
   end
 end

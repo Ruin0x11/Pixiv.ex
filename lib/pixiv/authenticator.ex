@@ -62,10 +62,10 @@ defmodule Pixiv.Authenticator do
         {:error, reason}
 
       {:ok, %{status_code: 400}} ->
-        {:error, "Unauthorized! Maybe your pixiv username or password is wrong?"}
+        {:error, "Authentication failed"}
 
       _ ->
-        {:error, "Unknown error while parsing response from Pixiv."}
+        {:error, "Unknown error while parsing response from Pixiv"}
     end
   end
 

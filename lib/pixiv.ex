@@ -32,6 +32,22 @@ defmodule Pixiv do
   def client_secret, do: "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
 
   @doc """
+  Returns the gallery URL for `id`.
+  """
+  @spec gallery_url(term) :: String.t()
+  def gallery_url(id) do
+    "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=#{id}"
+  end
+
+  @doc """
+  Returns the member profile URL for `id`.
+  """
+  @spec member_url(term) :: String.t()
+  def member_url(id) do
+    "https://www.pixiv.net/member.php?id=#{id}"
+  end
+
+  @doc """
   Request headers required to access Pixiv.
   """
   @spec headers() :: [{String.t(), String.t()}]
