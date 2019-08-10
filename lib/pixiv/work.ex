@@ -81,7 +81,7 @@ defmodule Pixiv.Work do
   """
   @spec link_for(gallery) :: String.t()
   def link_for(gallery) do
-    Pixiv.gallery_url(gallery["url"])
+    Pixiv.gallery_url(gallery["id"])
   end
 
   @doc """
