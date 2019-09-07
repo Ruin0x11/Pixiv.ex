@@ -32,6 +32,12 @@ defmodule Pixiv do
   def client_secret, do: "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
 
   @doc """
+  Salt used when hashing times.
+  """
+  @spec hash_secret() :: String.t()
+  def hash_secret, do: "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c"
+
+  @doc """
   Returns the gallery URL for `id`.
   """
   @spec gallery_url(term) :: String.t()
@@ -52,9 +58,16 @@ defmodule Pixiv do
   """
   @spec headers() :: [{String.t(), String.t()}]
   def headers do
+    time = NaiveDateTime.to_iso8601(NaiveDateTime.utc_now())
+
+    hash = :crypto.hash(:md5, [time, hash_secret()])
+    hash = Base.encode16(hash, case: :lower)
+
     [
-      {"User-Agent", "PixivAndroidApp/5.0.64 (Android 6.0)"},
-      {"Referer", "https://public-api.secure.pixiv.net/"}
+      {"Referer", "https://public-api.secure.pixiv.net/"},
+      {"User-Agent", "PixivIOSApp/6.4.0"},
+      {"X-Client-Hash", hash},
+      {"X-Client-Time", time}
     ]
   end
 
