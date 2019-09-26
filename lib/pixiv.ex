@@ -42,7 +42,7 @@ defmodule Pixiv do
   """
   @spec gallery_url(term) :: String.t()
   def gallery_url(id) do
-    "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=#{id}"
+    "https://www.pixiv.net/en/artworks/#{id}"
   end
 
   @doc """
