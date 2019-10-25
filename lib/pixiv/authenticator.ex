@@ -85,6 +85,30 @@ defmodule Pixiv.Authenticator do
         get_secure_url: 1
       )
 
-    HTTPoison.post(Pixiv.auth_url(), {:form, form}, Pixiv.headers())
+    headers =
+      Pixiv.headers()
+      |> put_auth_headers()
+
+    HTTPoison.post(Pixiv.auth_url(), {:form, form}, headers)
+  end
+
+  defp put_auth_headers(headers) do
+    time = now()
+
+    hash = :crypto.hash(:md5, [time, Pixiv.hash_secret()])
+    hash = Base.encode16(hash, case: :lower)
+
+    [{"X-Client-Hash", hash}, {"X-Client-Time", time} | headers]
+  end
+
+  defp now do
+    time = NaiveDateTime.utc_now()
+
+    [year, month, day, hour, minute, second] =
+      [time.year, time.month, time.day, time.hour, time.minute, time.second]
+      |> Enum.map(&to_string/1)
+      |> Enum.map(&String.pad_leading(&1, 2, "0"))
+
+    "#{year}-#{month}-#{day}T#{hour}:#{minute}:#{second}+00:00"
   end
 end

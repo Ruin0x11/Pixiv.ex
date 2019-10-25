@@ -58,16 +58,9 @@ defmodule Pixiv do
   """
   @spec headers() :: [{String.t(), String.t()}]
   def headers do
-    time = NaiveDateTime.to_iso8601(NaiveDateTime.utc_now())
-
-    hash = :crypto.hash(:md5, [time, hash_secret()])
-    hash = Base.encode16(hash, case: :lower)
-
     [
       {"Referer", "https://public-api.secure.pixiv.net/"},
-      {"User-Agent", "PixivIOSApp/6.4.0"},
-      {"X-Client-Hash", hash},
-      {"X-Client-Time", time}
+      {"User-Agent", "PixivIOSApp/6.4.0"}
     ]
   end
 
