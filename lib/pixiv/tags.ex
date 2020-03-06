@@ -53,7 +53,8 @@ defmodule Pixiv.Tags do
 
   # Gets and decodes the gallery data for the given `id`.
   defp get_work_metadata(id) do
-    with {:ok, response} <- HTTPoison.get("https://www.pixiv.net/ajax/illust/#{id}"),
+    with {:ok, response} <-
+           HTTPoison.get("https://www.pixiv.net/ajax/illust/#{id}", Pixiv.headers()),
          {:ok, response} <- Jason.decode(response.body) do
       Map.fetch(response, "body")
     end
