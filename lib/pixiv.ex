@@ -60,7 +60,9 @@ defmodule Pixiv do
   def headers do
     [
       {"Referer", "https://public-api.secure.pixiv.net/"},
-      {"User-Agent", "PixivIOSApp/6.4.0"},
+      {"User-Agent", "PixivIOSApp/7.13.3 (iOS 14.6; iPhone13,2)"},
+      {"App-OS", "ios"},
+      {"App-OS-Version", "14.6"},
       {"Accept-Language", "en"}
     ]
   end
