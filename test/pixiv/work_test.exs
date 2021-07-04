@@ -23,6 +23,10 @@ defmodule Pixiv.WorkTest do
     test "id is correct", %{gallery: gallery} do
       assert gallery["id"] == 54_032_421
     end
+
+    test "image_urls is correct", %{gallery: gallery} do
+      assert get_in(gallery, ["image_urls", "original"]) != nil
+    end
   end
 
   defp prefetch(context) do
